@@ -144,50 +144,53 @@
         </div>
     </div>
 
+    <!-- Update the loadPosts function -->
     <script>
-        async function loadPosts() {
-            try {
-                // Using absolute path from the current directory
-                const response = await fetch('posts/index.json');
-                const posts = await response.json();
-                
-                const postList = document.getElementById('postList');
-                postList.innerHTML = ''; // Clear existing content
-                
-                if (!posts || posts.length === 0) {
-                    postList.innerHTML = '<div class="post-card">No posts available yet.</div>';
-                    return;
-                }
-                
-                posts.forEach(post => {
+    async function loadPosts() {
+        try {
+            // Using rss2json with CORS proxy
+            const CORS_PROXY = "https://api.rss2json.com/v1/api.json?rss_url=";
+            const MEDIUM_URL = encodeURIComponent("https://medium.com/feed/@rtbruhan");
+            const response = await fetch(`${CORS_PROXY}${MEDIUM_URL}`);
+            const data = await response.json();
+            
+            const postList = document.getElementById('postList');
+            postList.innerHTML = '';
+            
+            if (data.status === 'ok' && data.items && data.items.length > 0) {
+                data.items.forEach(post => {
                     const postElement = document.createElement('div');
                     postElement.className = 'post-card';
                     
-                    const date = new Date(post.date).toLocaleDateString('en-US', {
+                    const date = new Date(post.pubDate).toLocaleDateString('en-US', {
                         year: 'numeric',
                         month: 'long',
                         day: 'numeric'
                     });
                     
+                    const excerpt = post.description
+                        .replace(/<[^>]*>/g, '') // Remove HTML tags
+                        .replace(/\s+/g, ' ') // Remove extra spaces
+                        .substring(0, 150) + '...';
+                    
                     postElement.innerHTML = `
                         <div class="post-date">${date}</div>
                         <h2 class="post-title">${post.title}</h2>
-                        <p class="post-excerpt">${post.excerpt}</p>
-                        <a href="posts/${post.filename}" class="read-more">Read More →</a>
+                        <p class="post-excerpt">${excerpt}</p>
+                        <a href="${post.link}" class="read-more" target="_blank">Read on Medium →</a>
                     `;
                     
                     postList.appendChild(postElement);
                 });
-            } catch (error) {
-                console.error('Error loading posts:', error);
-                const errorMessage = `Error details: ${error.message}`;
-                console.log(errorMessage); // This will help debug the specific error
-                document.getElementById('postList').innerHTML = '<div class="post-card">Error loading posts. Please try again later.</div>';
+            } else {
+                postList.innerHTML = '<div class="post-card">No posts available yet. Check back soon!</div>';
             }
+        } catch (error) {
+            console.error('Error loading posts:', error);
+            document.getElementById('postList').innerHTML = 
+                '<div class="post-card">Error loading posts. Please try again later.</div>';
         }
-
-        // Call the function when the page loads
-        document.addEventListener('DOMContentLoaded', loadPosts);
+    }
     </script>
 
     <!-- Add near the top of body -->
