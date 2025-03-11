@@ -182,8 +182,98 @@
             }
         }
     </style>
+    <style>
+        /* Add these new styles */
+        .menu-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            border: none;
+            cursor: pointer;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .menu-button svg {
+            width: 24px;
+            height: 24px;
+            fill: #333;
+            transition: transform 0.3s ease;
+        }
+
+        .menu-button.active svg {
+            transform: rotate(90deg);
+        }
+
+        .menu-options {
+            position: fixed;
+            top: 70px;
+            right: 20px;
+            display: none;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 999;
+        }
+
+        .menu-options.active {
+            display: flex;
+        }
+
+        .menu-option {
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: #666;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            min-width: 80px;
+        }
+
+        .menu-option:hover {
+            background: white;
+            color: #333;
+            transform: translateX(-5px);
+        }
+    </style>
 </head>
 <body>
+    <!-- Add this right after the body tag -->
+    <!-- Update the menu HTML structure -->
+    <button class="menu-button" onclick="toggleMenu()">
+        <svg viewBox="0 0 24 24">
+            <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+        </svg>
+    </button>
+    <div class="menu-options">
+        <a href="blogs/blog.html" class="menu-option">Blogs</a>
+        <a href="tools/tools.html" class="menu-option">Tools</a>
+    </div>
+
+    <!-- Add this script before the closing body tag -->
+    <script>
+        function toggleMenu() {
+            const button = document.querySelector('.menu-button');
+            const options = document.querySelector('.menu-options');
+            button.classList.toggle('active');
+            options.classList.toggle('active');
+        }
+    </script>
+
     <div class="container">
         <div class="profile">
             <img src="res/Profile.png" alt="RTBRuhan" class="profile-img">
