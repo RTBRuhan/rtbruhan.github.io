@@ -105,11 +105,7 @@
             transform: translateY(-5px);
         }
 
-        .post-date {
-            color: #666;
-            font-size: 0.9rem;
-            margin-bottom: 8px;
-        }
+        /* Removed .post-date class */
 
         .post-title {
             font-size: 1.4rem;
@@ -144,20 +140,25 @@
         </div>
     </div>
 
-    <!-- Update the loadPosts function -->
+    <!-- Update the loadPosts function and add initialization -->
     <script>
     async function loadPosts() {
         try {
-            // Using rss2json with CORS proxy
+            console.log('Fetching posts...');
             const CORS_PROXY = "https://api.rss2json.com/v1/api.json?rss_url=";
             const MEDIUM_URL = encodeURIComponent("https://medium.com/feed/@rtbruhan");
-            const response = await fetch(`${CORS_PROXY}${MEDIUM_URL}`);
+            const fetchUrl = `${CORS_PROXY}${MEDIUM_URL}`;
+            
+            console.log('Fetching from:', fetchUrl);
+            const response = await fetch(fetchUrl);
             const data = await response.json();
+            console.log('Received data:', data);
             
             const postList = document.getElementById('postList');
             postList.innerHTML = '';
             
             if (data.status === 'ok' && data.items && data.items.length > 0) {
+                console.log(`Found ${data.items.length} posts`);
                 data.items.forEach(post => {
                     const postElement = document.createElement('div');
                     postElement.className = 'post-card';
@@ -169,12 +170,11 @@
                     });
                     
                     const excerpt = post.description
-                        .replace(/<[^>]*>/g, '') // Remove HTML tags
-                        .replace(/\s+/g, ' ') // Remove extra spaces
+                        .replace(/<[^>]*>/g, '')
+                        .replace(/\s+/g, ' ')
                         .substring(0, 150) + '...';
                     
                     postElement.innerHTML = `
-                        <div class="post-date">${date}</div>
                         <h2 class="post-title">${post.title}</h2>
                         <p class="post-excerpt">${excerpt}</p>
                         <a href="${post.link}" class="read-more" target="_blank">Read on Medium →</a>
@@ -183,6 +183,7 @@
                     postList.appendChild(postElement);
                 });
             } else {
+                console.log('No posts found or invalid data:', data);
                 postList.innerHTML = '<div class="post-card">No posts available yet. Check back soon!</div>';
             }
         } catch (error) {
@@ -191,6 +192,9 @@
                 '<div class="post-card">Error loading posts. Please try again later.</div>';
         }
     }
+
+    // Add this line to call loadPosts when the page loads
+    document.addEventListener('DOMContentLoaded', loadPosts);
     </script>
 
     <!-- Add near the top of body -->
