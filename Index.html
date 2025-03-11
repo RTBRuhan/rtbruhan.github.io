@@ -1,54 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang='en'>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RTB Ruhan - Landing Page</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
-    <script src="https://unpkg.com/@mui/material@latest/umd/material-ui.development.js" crossorigin="anonymous"></script>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>RTBRuhan</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700&display=swap" rel="stylesheet">
     <style>
         body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Roboto', sans-serif;
-        }
-        #root {
             display: flex;
             flex-direction: column;
-            align-items: center;
             justify-content: center;
+            align-items: center;
             height: 100vh;
-            text-align: center;
+            margin: 0;
+            background-color: #f0f0f0;
+            font-family: 'Nunito', sans-serif;
+        }
+        h1 {
+            font-size: 3.5em;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        .github-btn {
+            background-color: #24292e;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1.2em;
+            border-radius: 25px;
+            cursor: pointer;
+            font-family: 'Nunito', sans-serif;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+        .github-btn:hover {
+            transform: scale(1.05);
+            background-color: #2f363d;
         }
     </style>
 </head>
 <body>
-    <div id="root">
-        <script type="text/babel">
-            const { Typography, Button, Container } = MaterialUI;
-
-            function App() {
-                return (
-                    <Container maxWidth="sm">
-                        <Typography variant="h2" component="h1" gutterBottom>
-                            RTB Ruhan
-                        </Typography>
-                        <Typography variant="subtitle1" gutterBottom>
-                            Artist, Tech Enthusiast, Adventurer.
-                        </Typography>
-                        <Button variant="contained" color="primary" href="/MyApps">
-                            Check Out My Apps
-                        </Button>
-                    </Container>
-                );
-            }
-
-            ReactDOM.render(<App />, document.getElementById('root'));
-        </script>
-        <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin="anonymous"></script>
-        <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin="anonymous"></script>
-        <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
-    </div>
+    <h1>RTBRuhan</h1>
+    <button class="github-btn" onclick="window.location.href='https://github.com/RTBRuhan'">
+        Visit My GitHub
+    </button>
 </body>
 </html>
