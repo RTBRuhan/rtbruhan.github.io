@@ -1,47 +1,278 @@
 <!DOCTYPE html>
-<html lang='en'>
+<html lang="en">
 <head>
-    <meta charset='UTF-8'>
-    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-    <title>RTBRuhan</title>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RTBRuhan - Creative Director</title>
     <style>
+        /* Base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+        
         body {
+            background-color: #f8f8f8;
+            color: #333;
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f0f0f0;
-            font-family: 'Nunito', sans-serif;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
         }
-        h1 {
-            font-size: 3.5em;
-            color: #333;
-            margin-bottom: 30px;
+        
+        .container {
+            width: 100%;
+            max-width: 1000px;
         }
-        .github-btn {
-            background-color: #24292e;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            font-size: 1.2em;
-            border-radius: 25px;
-            cursor: pointer;
-            font-family: 'Nunito', sans-serif;
-            transition: transform 0.2s, background-color 0.2s;
+        
+        /* Profile section */
+        .profile {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 40px;
+            text-align: center;
         }
-        .github-btn:hover {
-            transform: scale(1.05);
-            background-color: #2f363d;
+        
+        .profile-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 20px;
+        }
+        
+        .profile h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .profile p {
+            font-size: 1.2rem;
+            color: #666;
+        }
+        
+        /* Social links grid */
+        .social-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            width: 100%;
+        }
+        
+        .social-card {
+            background-color: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .social-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .social-icon img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+        
+        .social-info {
+            flex: 1;
+        }
+        
+        .social-info h3 {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+        
+        .social-info p {
+            font-size: 0.9rem;
+            color: #888;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .social-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+            
+            .profile h1 {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .social-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .profile-img {
+                width: 120px;
+                height: 120px;
+            }
         }
     </style>
 </head>
 <body>
-    <h1>RTBRuhan</h1>
-    <button class="github-btn" onclick="window.location.href='https://github.com/RTBRuhan'">
-        Visit My GitHub
-    </button>
+    <div class="container">
+        <div class="profile">
+            <img src="res/Profile.png" alt="RTBRuhan" class="profile-img">
+            <h1>RTBRuhan</h1>
+            <p>Creative Director @ Null Station</p>
+        </div>
+        
+        <div class="social-grid">
+            <!-- Facebook -->
+            <a href="https://facebook.com/rtbruhan" class="social-card facebook">
+                <div class="social-icon">
+                    <img src="https://cdn-icons-png.flaticon.com/512/124/124010.png" alt="Facebook">
+                </div>
+                <div class="social-info">
+                    <h3>Facebook</h3>
+                    <!-- <p>facebook.com</p> -->
+                </div>
+            </a>
+            
+            <!-- Instagram -->
+            <a href="https://instagram.com/rtbruhan" class="social-card instagram">
+                <div class="social-icon">
+                    <img src="https://cdn-icons-png.flaticon.com/512/174/174855.png" alt="Instagram">
+                </div>
+                <div class="social-info">
+                    <h3>Instagram</h3>
+                    <!-- <p>@rtbruhan</p> -->
+                </div>
+            </a>
+
+            <!-- LinkedIn -->
+            <a href="https://linkedin.com/in/rtbruhan0" class="social-card linkedin">
+                <div class="social-icon">
+                    <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="LinkedIn">
+                </div>
+                <div class="social-info">
+                    <h3>LinkedIn</h3>
+                    <!-- <p>linkedin.com</p> -->
+                </div>
+            </a>
+            
+            <!-- Twitter -->
+            <a href="https://twitter.com/rtbruhan" class="social-card twitter">
+                <div class="social-icon">
+                    <img src="https://cdn-icons-png.flaticon.com/512/733/733579.png" alt="Twitter">
+                </div>
+                <div class="social-info">
+                    <h3>Twitter</h3>
+                    <!-- <p>@rtbruhan</p> -->
+                </div>
+            </a>
+            
+            <!-- YouTube -->
+            <a href="https://youtube.com/rtbruhan" class="social-card youtube">
+                <div class="social-icon">
+                    <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube">
+                </div>
+                <div class="social-info">
+                    <h3>YouTube</h3>
+                    <!-- <p>@rtbruhan</p> -->
+                </div>
+            </a>
+
+            <!-- WhatsApp -->
+            <a href="https://wa.me/+8801307031932" class="social-card whatsapp">
+                <div class="social-icon">
+                    <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp">
+                </div>
+                <div class="social-info">
+                    <h3>WhatsApp</h3>
+                    <!-- <p>wa.me</p> -->
+                </div>
+            </a>
+
+            <!-- IMDb -->
+            <a href="https://www.imdb.com/name/nm13671189/" class="social-card imdb">
+                <div class="social-icon">
+                    <img src="https://cdn-icons-png.flaticon.com/512/5977/5977585.png" alt="IMDb">
+                </div>
+                <div class="social-info">
+                    <h3>IMDb</h3>
+                    <!-- <p>Director/Producer</p> -->
+                </div>
+            </a>
+            
+                        
+            <!-- Gmail -->
+            <a href="mailto:your.email@gmail.com" class="social-card gmail">
+                <div class="social-icon">
+                    <img src="https://cdn-icons-png.flaticon.com/512/5968/5968534.png" alt="Gmail">
+               </div>
+               <div class="social-info">
+                   <h3>Gmail</h3>
+                   <!-- <p>your.email@gmail.com</p> -->
+              </div>
+             </a>
+ 
+            <!-- Reddit -->
+            <a href="https://reddit.com/rtbruhan" class="social-card reddit">
+                <div class="social-icon">
+                    <img src="https://cdn-icons-png.flaticon.com/512/1384/1384019.png" alt="Reddit">
+                </div>
+                <div class="social-info">
+                    <h3>Reddit</h3>
+                    <!-- <p>reddit.com</p> -->
+                </div>
+            </a>
+            
+            <!-- Behance -->
+            <a href="https://behance.net/rtbruhan" class="social-card behance">
+                <div class="social-icon">
+                    <img src="https://cdn-icons-png.flaticon.com/512/145/145799.png" alt="Behance">
+                </div>
+                <div class="social-info">
+                    <h3>Behance</h3>
+                </div>
+            </a>
+            
+            
+            <!-- Medium -->
+            <a href="https://medium.com/@rtbruhan" class="social-card medium">
+                <div class="social-icon">
+                    <img src="https://cdn-icons-png.flaticon.com/512/5968/5968906.png" alt="Medium">
+                </div>
+                <div class="social-info">
+                    <h3>Medium</h3>
+                    <!-- <p>medium.com</p> -->
+                </div>
+            </a>
+            
+            <!-- GitHub -->
+            <a href="https://github.com/rtbruhan" class="social-card github">
+                <div class="social-icon">
+                    <img src="https://cdn-icons-png.flaticon.com/512/733/733553.png" alt="GitHub">
+                </div>
+                <div class="social-info">
+                    <h3>GitHub</h3>
+                </div>
+            </a>
+
+        </div>
+    </div>
 </body>
 </html>
