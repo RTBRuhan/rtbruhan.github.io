@@ -144,7 +144,7 @@
     <script>
     async function loadPosts() {
         try {
-            console.log('Fetching posts...');
+            console.log('Fetching posts... ' + new Date().toISOString());  // Add timestamp
             const CORS_PROXY = "https://api.rss2json.com/v1/api.json?rss_url=";
             // Updated Medium feed URL format
             const MEDIUM_URL = encodeURIComponent("https://rtbruhan.medium.com/feed");
