@@ -146,8 +146,9 @@
         try {
             console.log('Fetching posts...');
             const CORS_PROXY = "https://api.rss2json.com/v1/api.json?rss_url=";
-            const MEDIUM_URL = encodeURIComponent("https://medium.com/feed/@rtbruhan");
-            const fetchUrl = `${CORS_PROXY}${MEDIUM_URL}`;
+            // Updated Medium feed URL format
+            const MEDIUM_URL = encodeURIComponent("https://rtbruhan.medium.com/feed");
+            const fetchUrl = `${CORS_PROXY}${MEDIUM_URL}&timestamp=${new Date().getTime()}`;
             
             console.log('Fetching from:', fetchUrl);
             const response = await fetch(fetchUrl);
