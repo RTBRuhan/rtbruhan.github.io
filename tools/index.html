@@ -36,6 +36,9 @@
             background-color: #f9fafb;
             min-height: 100vh;
             padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         body::before {
@@ -273,6 +276,12 @@
     
                 // Add Chrome extensions (manually since Chrome Web Store doesn't have a public API)
                 const extensions = [
+                    {
+                        name: 'Life Log',
+                        description: 'Track your life\'s countdown and document your journey with a clean, daily journal.',
+                        url: 'https://chromewebstore.google.com/detail/life-log/mcbohapffdikfohpfbfabpfgngobngdc',
+                        type: 'extension'
+                    },
                     {
                         name: 'KeepClick',
                         description: 'Keep your mouse clicks active even when the tab is not focused',
