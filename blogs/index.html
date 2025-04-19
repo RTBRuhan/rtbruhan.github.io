@@ -12,8 +12,9 @@
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Read the latest blog posts by RTBRuhan on various topics, fetched from Medium.">
-    <title>RTBRuhan - Blog</title>
+    <meta name="description" content="A curated list of blog posts by RTBRuhan.">
+    <title>RTBRuhan - Blogs</title>
+    <link rel="icon" href="../res/profile.webp" type="image/webp">
     <style>
         /* Add the same base styles as index.html */
         body {
@@ -129,6 +130,13 @@
         .read-more:hover {
             text-decoration: underline;
         }
+
+        /* Add loading style */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
     </style>
 </head>
 <body>
@@ -137,13 +145,17 @@
             <h1>Blog Posts</h1>
         </div>
         <div class="post-list" id="postList">
-            <!-- Posts will be dynamically inserted here -->
+            <!-- Add loading indicator -->
+            <div class="loading">Loading blogs...</div>
         </div>
     </div>
 
     <!-- Update the loadPosts function and add initialization -->
     <script>
     async function loadPosts() {
+        const postList = document.getElementById('postList');
+        // Keep the loading text initially, clear before populating or showing error
+
         try {
             console.log('Fetching posts... ' + new Date().toISOString());  // Add timestamp
             const CORS_PROXY = "https://api.rss2json.com/v1/api.json?rss_url=";
@@ -156,8 +168,8 @@
             const data = await response.json();
             console.log('Received data:', data);
             
-            const postList = document.getElementById('postList');
-            postList.innerHTML = '';
+            // Clear loading text before adding posts or error
+            postList.innerHTML = ''; 
             
             if (data.status === 'ok' && data.items && data.items.length > 0) {
                 console.log(`Found ${data.items.length} posts`);
@@ -186,11 +198,13 @@
                 });
             } else {
                 console.log('No posts found or invalid data:', data);
-                postList.innerHTML = '<div class="post-card">No posts available yet. Check back soon!</div>';
+                // Ensure loading text is cleared before showing 'No posts'
+                postList.innerHTML = '<div class="post-card">No posts available yet. Check back soon!</div>'; 
             }
         } catch (error) {
             console.error('Error loading posts:', error);
-            document.getElementById('postList').innerHTML = 
+            // Ensure loading text is cleared before showing error
+            postList.innerHTML = 
                 '<div class="post-card">Error loading posts. Please try again later.</div>';
         }
     }
