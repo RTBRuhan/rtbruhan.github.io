@@ -16,65 +16,6 @@
     <title>RTBRuhan - Creative Director</title>
     <link rel="icon" href="res/Profile.webp" type="image/webp">
     <style>
-        @property --dynamic-secondary-color {
-          syntax: '<color>';
-          inherits: false;
-          initial-value: rgb(236, 252, 203); /* Original from Color Sample */
-        }
-        @property --gradient-x1 {
-          syntax: '<percentage>';
-          inherits: false;
-          initial-value: 80%;
-        }
-        @property --gradient-y1 {
-          syntax: '<percentage>';
-          inherits: false;
-          initial-value: 50%;
-        }
-        @property --gradient-x2 {
-          syntax: '<percentage>';
-          inherits: false;
-          initial-value: 20%;
-        }
-        @property --gradient-y2 {
-          syntax: '<percentage>';
-          inherits: false;
-          initial-value: 100%;
-        }
-
-        @keyframes animateBackground {
-          0% {
-            --gradient-x1: 80%;
-            --gradient-y1: 50%;
-            --gradient-x2: 20%;
-            --gradient-y2: 100%;
-          }
-          25% {
-            --gradient-x1: 60%;
-            --gradient-y1: 30%;
-            --gradient-x2: 40%;
-            --gradient-y2: 70%;
-          }
-          50% {
-            --gradient-x1: 20%;
-            --gradient-y1: 50%;
-            --gradient-x2: 80%;
-            --gradient-y2: 0%;
-          }
-          75% {
-            --gradient-x1: 40%;
-            --gradient-y1: 70%;
-            --gradient-x2: 60%;
-            --gradient-y2: 30%;
-          }
-          100% {
-            --gradient-x1: 80%;
-            --gradient-y1: 50%;
-            --gradient-x2: 20%;
-            --gradient-y2: 100%;
-          }
-        }
-
         /* Base styles */
         * {
             margin: 0;
@@ -84,17 +25,16 @@
         }
         
         body {
+            background: linear-gradient(135deg, rgba(249, 250, 251, 0.9) 0%, rgba(245, 247, 250, 0.9) 100%);
             background-image: 
-                /* Dynamic accent colors using --dynamic-secondary-color, animated positions */
-                radial-gradient(at var(--gradient-x1) var(--gradient-y1), var(--dynamic-secondary-color) 0%, transparent 75%),
-                radial-gradient(at var(--gradient-x2) var(--gradient-y2), var(--dynamic-secondary-color) 0%, transparent 75%),
-                /* Static white/off-white gradients from Color Sample */
                 radial-gradient(at 50% 0%, rgba(255, 255, 255, 0.8) 0%, transparent 75%),
                 radial-gradient(at 80% 0%, rgb(238, 242, 255) 0%, transparent 75%),
                 radial-gradient(at 0% 50%, rgb(255, 255, 255) 0%, transparent 75%),
-                radial-gradient(at 0% 100%, rgb(255, 255, 255) 0%, transparent 75%);
+                radial-gradient(at 80% 50%, rgb(236, 252, 203) 0%, transparent 75%),
+                radial-gradient(at 0% 100%, rgb(255, 255, 255) 0%, transparent 75%),
+                radial-gradient(at 80% 100%, rgb(236, 252, 203) 0%, transparent 75%);
             background-attachment: fixed;
-            background-color: #f9fafb; /* From Color Sample */
+            background-color: #f9fafb;
             color: #333;
             display: flex;
             flex-direction: column;
@@ -104,8 +44,6 @@
             padding: 20px;
             position: relative;
             overflow-x: hidden;
-            transition: --dynamic-secondary-color 1s ease; /* Smooth transition for the dynamic color */
-            animation: animateBackground 30s infinite linear; /* Added background animation */
         }
 
         body::before {
@@ -116,13 +54,9 @@
             right: 0;
             bottom: 0;
             background-image: 
-                /* Existing 60px grid */
                 linear-gradient(to right, rgba(255, 255, 255, 0.8) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(255, 255, 255, 0.8) 1px, transparent 1px),
-                /* New finer 20px sub-grid with lower opacity */
-                linear-gradient(to right, rgba(255, 255, 255, 0.4) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(255, 255, 255, 0.4) 1px, transparent 1px);
-            background-size: 60px 60px, 60px 60px, 20px 20px, 20px 20px; /* Sizes for both grids */
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.8) 1px, transparent 1px);
+            background-size: 60px 60px;
             z-index: -2;
         }
 
@@ -141,75 +75,6 @@
             z-index: -1;
             filter: blur(60px);
         }
-
-        /* Floating icons styles */
-        .floating-icon-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none; /* So they don't interfere with clicks */
-            z-index: -1; /* Behind body::after but above body::before */
-            overflow: hidden;
-        }
-
-        .floating-icon {
-            position: absolute;
-            color: rgba(0, 0, 0, 0.1); /* Monochromatic, subtle */
-            font-size: 60px; /* Further increased base size */
-            animation: float 15s infinite ease-in-out;
-            opacity: 0;
-        }
-
-        .floating-icon.icon-1 { top: 10%; left: 15%; animation-delay: 0s; font-size: 65px; } 
-        .floating-icon.icon-2 { top: 20%; left: 80%; animation-delay: -1.5s; font-size: 55px; }
-        .floating-icon.icon-3 { top: 70%; left: 10%; animation-delay: -3s; font-size: 70px; }
-        .floating-icon.icon-4 { top: 80%; left: 75%; animation-delay: -4.5s; font-size: 60px; }
-        .floating-icon.icon-5 { top: 40%; left: 50%; animation-delay: -6s; font-size: 58px; }
-        .floating-icon.icon-6 { top: 5%; left: 40%; animation-delay: -7.5s; font-size: 62px; }
-        .floating-icon.icon-7 { top: 90%; left: 30%; animation-delay: -9s; font-size: 55px; }
-        .floating-icon.icon-8 { top: 50%; left: 5%; animation-delay: -10.5s; font-size: 68px; }
-        .floating-icon.icon-9 { top: 30%; left: 90%; animation-delay: -12s; font-size: 50px; }
-        .floating-icon.icon-10 { top: 60%; left: 60%; animation-delay: -13.5s; font-size: 60px; }
-        .floating-icon.icon-11 { top: 15%; left: 65%; animation-delay: -0.5s; font-size: 62px; } /* Book */
-        .floating-icon.icon-12 { top: 85%; left: 50%; animation-delay: -2.5s; font-size: 58px; } /* Graph */
-        .floating-icon.icon-13 { top: 5%; left: 5%; animation-delay: -5.5s; font-size: 65px; }   /* Bag */
-        .floating-icon.icon-14 { top: 95%; left: 85%; animation-delay: -8.5s; font-size: 70px; } /* Code */
-
-
-        @keyframes float {
-            0% { 
-                transform: translateY(0px) translateX(0px) rotate(0deg); 
-                opacity: 0; 
-            }
-            25% { 
-                opacity: 1; 
-            }
-            50% { 
-                transform: translateY(-60vh) translateX(40vw) rotate(180deg); /* Significantly increased travel & rotation */
-            }
-            75% { 
-                opacity: 1; 
-            }
-            100% { 
-                transform: translateY(0px) translateX(0px) rotate(360deg); /* Return to start, but complete rotation */
-                opacity: 0; 
-            }
-        }
-
-        @keyframes cycleMenuButtonColor {
-            0%    { background-color: rgba(152, 251, 152, 0.8); } /* PaleGreen/Mint */
-            22.5% { background-color: rgba(152, 251, 152, 0.8); } /* End PaleGreen hold */
-            25%   { background-color: rgba(255, 255, 0, 0.8); }   /* Yellow */
-            47.5% { background-color: rgba(255, 255, 0, 0.8); }   /* End Yellow hold */
-            50%   { background-color: rgba(65, 105, 225, 0.8); }  /* Blueprint Blue (Royal) */
-            72.5% { background-color: rgba(65, 105, 225, 0.8); }  /* End Blue hold */
-            75%   { background-color: rgba(220, 220, 220, 0.8); }  /* Grey */
-            97.5% { background-color: rgba(220, 220, 220, 0.8); }  /* End Grey hold */
-            100%  { background-color: rgba(152, 251, 152, 0.8); } /* Loop back to PaleGreen */
-        }
-
         .container {
             width: 100%;
             max-width: 1000px;
@@ -325,10 +190,10 @@
             position: fixed;
             top: 20px;
             right: 20px;
-            width: 48px; /* Increased size */
-            height: 48px; /* Increased size */
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-            animation: cycleMenuButtonColor 40s infinite linear;
+            background: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px); /* Safari support */
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
@@ -391,25 +256,6 @@
     </style>
 </head>
 <body>
-    <div class="floating-icon-container">
-        <!-- Using simple text characters as placeholders for SVGs for now -->
-        <!-- Replace these with actual <svg> elements or an icon font later -->
-        <span class="floating-icon icon-1">💡</span> <!-- Lightbulb -->
-        <span class="floating-icon icon-2">🚀</span> <!-- Rocket -->
-        <span class="floating-icon icon-3">⚙️</span> <!-- Gear -->
-        <span class="floating-icon icon-4">⭐</span> <!-- Star -->
-        <span class="floating-icon icon-5">💻</span> <!-- Code/Laptop -->
-        <span class="floating-icon icon-6">🎨</span> <!-- Palette -->
-        <span class="floating-icon icon-7">🏆</span> <!-- Trophy -->
-        <span class="floating-icon icon-8">💬</span> <!-- Speech Bubble -->
-        <span class="floating-icon icon-9">💲</span> <!-- Dollar -->
-        <span class="floating-icon icon-10">🎮</span> <!-- Gamepad -->
-        <span class="floating-icon icon-11">📚</span> <!-- Book -->
-        <span class="floating-icon icon-12">📈</span> <!-- Graph -->
-        <span class="floating-icon icon-13">💼</span> <!-- Business Bag -->
-        <span class="floating-icon icon-14">&lt;/&gt;</span> <!-- Programming/Code -->
-    </div>
-
     <!-- Add this right after the body tag -->
     <!-- Update the menu HTML structure -->
     <button class="menu-button" onclick="toggleMenu()" title="Toggle Menu">
@@ -430,25 +276,6 @@
             button.classList.toggle('active');
             options.classList.toggle('active');
         }
-
-        // Script for dynamic background color cycling
-        document.addEventListener('DOMContentLoaded', function() {
-            const bodyElement = document.body;
-            const colors = [
-                'rgb(236, 252, 203)', // Original from Color Sample
-                'rgb(255, 220, 100)', // Modern Yellow
-                'rgb(170, 210, 230)'  // Modern Light Blue
-            ];
-            let currentColorIndex = 0;
-
-            // Set initial color
-            bodyElement.style.setProperty('--dynamic-secondary-color', colors[currentColorIndex]);
-
-            setInterval(() => {
-                currentColorIndex = (currentColorIndex + 1) % colors.length;
-                bodyElement.style.setProperty('--dynamic-secondary-color', colors[currentColorIndex]);
-            }, 10000); // Change color every 10 seconds
-        });
     </script>
 
     <div class="container">
