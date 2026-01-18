@@ -159,7 +159,7 @@
 
         .tools-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 20px;
             width: 100%;
         }
@@ -171,13 +171,17 @@
             display: flex;
             align-items: center;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            transition: transform 0.2s ease;
+            transition: transform 0.2s ease, height 0.3s ease;
             text-decoration: none;
             color: inherit;
+            min-height: 80px;
+            height: 80px;
         }
 
         .tool-card:hover {
             transform: translateY(-5px);
+            height: auto;
+            align-items: flex-start;
         }
 
         .tool-icon {
@@ -188,6 +192,8 @@
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
+            align-self: flex-start;
+            padding-top: 5px;
         }
 
         .tool-info {
@@ -202,6 +208,14 @@
             margin-bottom: 5px;
             color: #333;
             padding: 4px 15px; /* Add some padding */
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            transition: white-space 0.3s ease;
+        }
+
+        .tool-card:hover .tool-info h3 {
+            white-space: normal;
         }
 
         .tool-info p {
@@ -209,9 +223,11 @@
             color: #666;
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.3s ease, opacity 0.3s ease;
+            transition: max-height 0.3s ease, opacity 0.3s ease, padding 0.3s ease;
             opacity: 0;
             padding: 0px 15px;
+            line-height: 1.4;
+            word-wrap: break-word;
         }
 
         .loading {
@@ -269,8 +285,9 @@
         }
 
         .tool-card:hover .tool-info p {
-            max-height: 100px;
+            max-height: 150px;
             opacity: 1;
+            padding-top: 5px;
         }
     </style>
 
@@ -373,6 +390,18 @@
                         name: 'Quick Notes & Reminders',
                         description: 'Quick and easy note-taking and reminder tool',
                         url: 'https://chromewebstore.google.com/detail/quick-notes-reminders/nhfjjjpnjekaojnnammcddigkimelgno',
+                        type: 'extension'
+                    },
+                    {
+                        name: 'Apex Agent',
+                        description: 'Connect AI to your browser via MCP protocol. Automate, control, record, and debug with 69+ tools.',
+                        url: 'https://chromewebstore.google.com/detail/apex-agent/pmpkkbjdkmcjcekkokcgakngkbmgehcp',
+                        type: 'extension'
+                    },
+                    {
+                        name: 'InstaHand',
+                        description: 'Auto-unmute Instagram videos, native controls, keyboard shortcuts, and DM reel navigation',
+                        url: 'https://chromewebstore.google.com/detail/instahand/bkagnibhkeohgjljdbpppmfbanihgkid',
                         type: 'extension'
                     }
                 ];
