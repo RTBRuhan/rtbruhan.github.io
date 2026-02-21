@@ -141,7 +141,7 @@
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 0 auto;
         }
 
@@ -159,9 +159,27 @@
 
         .tools-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(4, 1fr);
             gap: 20px;
             width: 100%;
+        }
+
+        @media (max-width: 1200px) {
+            .tools-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 900px) {
+            .tools-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         .tool-card {
@@ -402,6 +420,12 @@
                         name: 'InstaHand',
                         description: 'Auto-unmute Instagram videos, native controls, keyboard shortcuts, and DM reel navigation',
                         url: 'https://chromewebstore.google.com/detail/instahand/bkagnibhkeohgjljdbpppmfbanihgkid',
+                        type: 'extension'
+                    },
+                    {
+                        name: 'Auto Recorder',
+                        description: 'Automatically trigger OBS recording when visiting meeting sites like Google Meet, Zoom, and Teams',
+                        url: 'https://chromewebstore.google.com/detail/auto-recorder/gonlojcnmkcicaphkbkneejblnalmhjl',
                         type: 'extension'
                     }
                 ];
