@@ -162,6 +162,7 @@
             grid-template-columns: repeat(4, 1fr);
             gap: 20px;
             width: 100%;
+            align-items: stretch;
         }
 
         @media (max-width: 1200px) {
@@ -185,33 +186,32 @@
         .tool-card {
             background-color: #fff;
             border-radius: 12px;
-            padding: 20px;
+            padding: 15px;
             display: flex;
             align-items: center;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            transition: transform 0.2s ease, height 0.3s ease;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
             text-decoration: none;
             color: inherit;
-            min-height: 80px;
-            height: 80px;
+            height: 70px;
+            min-height: 70px;
+            max-height: 70px;
+            overflow: hidden;
         }
 
         .tool-card:hover {
             transform: translateY(-5px);
-            height: auto;
-            align-items: flex-start;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
         }
 
         .tool-icon {
-            width: 40px;
-            height: 40px;
-            margin-right: 25px; /* Increased margin */
+            width: 32px;
+            height: 32px;
+            margin-right: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
-            align-self: flex-start;
-            padding-top: 5px;
         }
 
         .tool-info {
@@ -222,30 +222,16 @@
         }
 
         .tool-info h3 {
-            font-size: 1.1rem;
-            margin-bottom: 5px;
+            font-size: 0.95rem;
+            margin: 0;
             color: #333;
-            padding: 4px 15px; /* Add some padding */
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            transition: white-space 0.3s ease;
-        }
-
-        .tool-card:hover .tool-info h3 {
-            white-space: normal;
         }
 
         .tool-info p {
-            font-size: 0.9rem;
-            color: #666;
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease, opacity 0.3s ease, padding 0.3s ease;
-            opacity: 0;
-            padding: 0px 15px;
-            line-height: 1.4;
-            word-wrap: break-word;
+            display: none;
         }
 
         .loading {
@@ -294,18 +280,25 @@
             transform: translateX(-5px);
         }
 
-        /* Modify tool card description visibility */
-        .tool-info p {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease, opacity 0.3s ease;
-            opacity: 0;
+        .tool-card[title]:hover::after {
+            content: attr(title);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            white-space: normal;
+            max-width: 250px;
+            z-index: 1000;
+            margin-bottom: 8px;
         }
 
-        .tool-card:hover .tool-info p {
-            max-height: 150px;
-            opacity: 1;
-            padding-top: 5px;
+        .tool-card {
+            position: relative;
         }
     </style>
 
@@ -447,6 +440,7 @@
             card.href = tool.url;
             card.className = 'tool-card';
             card.target = '_blank';
+            card.title = tool.description;
     
             const icon = tool.type === 'extension' ? 
                 '<path d="M20.5 11H19V7c0-1.1-.9-2-2-2h-4V3.5C13 2.12 11.88 1 10.5 1S8 2.12 8 3.5V5H4c-1.1 0-1.99.9-1.99 2v3.8H3.5c1.49 0 2.7 1.21 2.7 2.7s-1.21 2.7-2.7 2.7H2V20c0 1.1.9 2 2 2h3.8v-1.5c0-1.49 1.21-2.7 2.7-2.7 1.49 0 2.7 1.21 2.7 2.7V22H17c1.1 0 2-.9 2-2v-4h1.5c1.38 0 2.5-1.12 2.5-2.5S21.88 11 20.5 11z"/>' :
@@ -460,7 +454,6 @@
                 </div>
                 <div class="tool-info">
                     <h3>${tool.name}</h3>
-                    <p>${tool.description}</p>
                 </div>
             `;
             
