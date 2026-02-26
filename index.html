@@ -187,8 +187,9 @@
         }
 
         .section-title {
-            font-size: 2rem;
+            font-size: 2.5rem;
             color: #333;
+            font-weight: 700;
         }
 
         .section-blog {
@@ -424,6 +425,28 @@
             text-decoration: underline;
         }
 
+        .all-blogs-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            border: 2px dashed rgba(0, 122, 255, 0.3);
+            background: rgba(0, 122, 255, 0.03);
+            min-height: 200px;
+        }
+
+        .all-blogs-card:hover {
+            border-color: #007AFF;
+            background: rgba(0, 122, 255, 0.06);
+        }
+
+        .all-blogs-text {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #007AFF;
+        }
+
         /* ===== PROJECTS SECTION ===== */
         .projects-grid {
             display: grid;
@@ -513,7 +536,7 @@
             }
 
             .section-title {
-                font-size: 1.6rem;
+                font-size: 2rem;
             }
 
             .section {
@@ -736,6 +759,18 @@
             `;
             expandedEl.appendChild(card);
         });
+
+        const allBlogsCard = document.createElement('a');
+        allBlogsCard.href = 'https://rtbruhan.medium.com/';
+        allBlogsCard.target = '_blank';
+        allBlogsCard.className = 'post-card all-blogs-card';
+        allBlogsCard.innerHTML = `
+            <svg viewBox="0 0 24 24" width="40" height="40" fill="#007AFF" style="margin-bottom:12px;">
+                <path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/>
+            </svg>
+            <span class="all-blogs-text">View All on Medium</span>
+        `;
+        expandedEl.appendChild(allBlogsCard);
     }
 
     function createPostCard(post) {
@@ -762,7 +797,7 @@
         try {
             const CORS_PROXY = "https://api.rss2json.com/v1/api.json?rss_url=";
             const MEDIUM_URL = encodeURIComponent("https://rtbruhan.medium.com/feed");
-            const fetchUrl = `${CORS_PROXY}${MEDIUM_URL}&count=50&timestamp=${new Date().getTime()}`;
+            const fetchUrl = `${CORS_PROXY}${MEDIUM_URL}&timestamp=${new Date().getTime()}`;
 
             const response = await fetch(fetchUrl);
             const data = await response.json();
@@ -905,6 +940,111 @@
             currentColorIndex = (currentColorIndex + 1) % colors.length;
             bodyElement.style.setProperty('--dynamic-secondary-color', colors[currentColorIndex]);
         }, 10000);
+
+        // Drag-to-scroll with momentum for blog marquee
+        const wrapper = document.getElementById('blogScrollWrapper');
+        const track = document.getElementById('blogMarquee');
+        let isDragging = false;
+        let startX = 0;
+        let currentX = 0;
+        let velocity = 0;
+        let lastMoveX = 0;
+        let lastMoveTime = 0;
+        let momentumFrame = null;
+        let autoScrollSpeed = -0.8;
+        let animating = false;
+
+        function getTranslateX() {
+            const style = window.getComputedStyle(track);
+            const matrix = new DOMMatrix(style.transform);
+            return matrix.m41;
+        }
+
+        function wrapPosition(x) {
+            const halfWidth = track.scrollWidth / 2;
+            if (halfWidth === 0) return x;
+            while (x > 0) x -= halfWidth;
+            while (x < -halfWidth) x += halfWidth;
+            return x;
+        }
+
+        function stopCSS() {
+            if (!animating) {
+                currentX = getTranslateX();
+                track.style.animation = 'none';
+                track.style.transform = `translateX(${currentX}px)`;
+                animating = true;
+                requestAnimationFrame(animationLoop);
+            }
+        }
+
+        function resumeCSS() {
+            animating = false;
+            if (momentumFrame) cancelAnimationFrame(momentumFrame);
+            const halfWidth = track.scrollWidth / 2;
+            if (halfWidth === 0) return;
+            const progress = Math.abs(currentX % halfWidth) / halfWidth;
+            track.style.animation = '';
+            track.style.transform = '';
+            track.style.animationDelay = `-${progress * 40}s`;
+        }
+
+        function animationLoop() {
+            if (!animating) return;
+            if (!isDragging) {
+                velocity *= 0.96;
+                if (Math.abs(velocity) < Math.abs(autoScrollSpeed)) {
+                    velocity += (autoScrollSpeed - velocity) * 0.02;
+                }
+                if (Math.abs(velocity - autoScrollSpeed) < 0.1) {
+                    resumeCSS();
+                    return;
+                }
+                currentX += velocity;
+            }
+            currentX = wrapPosition(currentX);
+            track.style.transform = `translateX(${currentX}px)`;
+            requestAnimationFrame(animationLoop);
+        }
+
+        function onDragStart(e) {
+            isDragging = true;
+            velocity = 0;
+            startX = (e.touches ? e.touches[0].clientX : e.clientX);
+            lastMoveX = startX;
+            lastMoveTime = performance.now();
+            stopCSS();
+            wrapper.style.cursor = 'grabbing';
+        }
+
+        function onDragMove(e) {
+            if (!isDragging) return;
+            e.preventDefault();
+            const x = (e.touches ? e.touches[0].clientX : e.clientX);
+            const now = performance.now();
+            const dt = now - lastMoveTime;
+            const diff = x - lastMoveX;
+
+            if (dt > 0) velocity = diff / dt * 16;
+
+            currentX += diff;
+            lastMoveX = x;
+            lastMoveTime = now;
+        }
+
+        function onDragEnd() {
+            if (!isDragging) return;
+            isDragging = false;
+            wrapper.style.cursor = 'grab';
+        }
+
+        wrapper.style.cursor = 'grab';
+        wrapper.addEventListener('mousedown', onDragStart);
+        window.addEventListener('mousemove', onDragMove);
+        window.addEventListener('mouseup', onDragEnd);
+        wrapper.addEventListener('touchstart', onDragStart, { passive: true });
+        wrapper.addEventListener('touchmove', onDragMove, { passive: false });
+        wrapper.addEventListener('touchend', onDragEnd);
     });
     </script>
 </body>
