@@ -762,7 +762,7 @@
         try {
             const CORS_PROXY = "https://api.rss2json.com/v1/api.json?rss_url=";
             const MEDIUM_URL = encodeURIComponent("https://rtbruhan.medium.com/feed");
-            const fetchUrl = `${CORS_PROXY}${MEDIUM_URL}&timestamp=${new Date().getTime()}`;
+            const fetchUrl = `${CORS_PROXY}${MEDIUM_URL}&count=50&timestamp=${new Date().getTime()}`;
 
             const response = await fetch(fetchUrl);
             const data = await response.json();
@@ -785,23 +785,36 @@
 
     async function loadProjects() {
         try {
-            const reposResponse = await fetch('https://api.github.com/users/rtbruhan/repos');
+            const reposResponse = await fetch('https://api.github.com/users/rtbruhan/repos?sort=updated&direction=desc&per_page=100');
             const repos = await reposResponse.json();
             const projectsGrid = document.getElementById('projectsGrid');
             projectsGrid.innerHTML = '';
 
-            repos.forEach(repo => {
-                if (repo.has_pages && repo.name !== 'rtbruhan.github.io') {
-                    addProjectCard({
-                        name: repo.name.replace(/-/g, ' '),
-                        description: repo.description || 'A useful tool',
-                        url: `https://rtbruhan.github.io/${repo.name}`,
-                        type: 'web'
-                    });
-                }
-            });
-
             const extensions = [
+                {
+                    name: 'Auto Recorder',
+                    description: 'Automatically trigger OBS recording when visiting meeting sites like Google Meet, Zoom, and Teams',
+                    url: 'https://chromewebstore.google.com/detail/auto-recorder/gonlojcnmkcicaphkbkneejblnalmhjl',
+                    type: 'extension'
+                },
+                {
+                    name: 'Apex Agent',
+                    description: 'Connect AI to your browser via MCP protocol. Automate, control, record, and debug with 69+ tools.',
+                    url: 'https://chromewebstore.google.com/detail/apex-agent/pmpkkbjdkmcjcekkokcgakngkbmgehcp',
+                    type: 'extension'
+                },
+                {
+                    name: 'InstaHand',
+                    description: 'Auto-unmute Instagram videos, native controls, keyboard shortcuts, and DM reel navigation',
+                    url: 'https://chromewebstore.google.com/detail/instahand/bkagnibhkeohgjljdbpppmfbanihgkid',
+                    type: 'extension'
+                },
+                {
+                    name: 'Quick Notes & Reminders',
+                    description: 'Quick and easy note-taking and reminder tool',
+                    url: 'https://chromewebstore.google.com/detail/quick-notes-reminders/nhfjjjpnjekaojnnammcddigkimelgno',
+                    type: 'extension'
+                },
                 {
                     name: 'Life Log',
                     description: 'Track your life\'s countdown and document your journey with a clean, daily journal.',
@@ -825,34 +838,21 @@
                     description: 'Automatically unmute Facebook videos',
                     url: 'https://chromewebstore.google.com/detail/facebook-auto-unmute/oefamibbccndbjjcfcdohckidbekkieg',
                     type: 'extension'
-                },
-                {
-                    name: 'Quick Notes & Reminders',
-                    description: 'Quick and easy note-taking and reminder tool',
-                    url: 'https://chromewebstore.google.com/detail/quick-notes-reminders/nhfjjjpnjekaojnnammcddigkimelgno',
-                    type: 'extension'
-                },
-                {
-                    name: 'Apex Agent',
-                    description: 'Connect AI to your browser via MCP protocol. Automate, control, record, and debug with 69+ tools.',
-                    url: 'https://chromewebstore.google.com/detail/apex-agent/pmpkkbjdkmcjcekkokcgakngkbmgehcp',
-                    type: 'extension'
-                },
-                {
-                    name: 'InstaHand',
-                    description: 'Auto-unmute Instagram videos, native controls, keyboard shortcuts, and DM reel navigation',
-                    url: 'https://chromewebstore.google.com/detail/instahand/bkagnibhkeohgjljdbpppmfbanihgkid',
-                    type: 'extension'
-                },
-                {
-                    name: 'Auto Recorder',
-                    description: 'Automatically trigger OBS recording when visiting meeting sites like Google Meet, Zoom, and Teams',
-                    url: 'https://chromewebstore.google.com/detail/auto-recorder/gonlojcnmkcicaphkbkneejblnalmhjl',
-                    type: 'extension'
                 }
             ];
 
             extensions.forEach(ext => addProjectCard(ext));
+
+            repos.forEach(repo => {
+                if (repo.has_pages && repo.name !== 'rtbruhan.github.io') {
+                    addProjectCard({
+                        name: repo.name.replace(/-/g, ' '),
+                        description: repo.description || 'A useful tool',
+                        url: `https://rtbruhan.github.io/${repo.name}`,
+                        type: 'web'
+                    });
+                }
+            });
 
             if (projectsGrid.children.length === 0) {
                 projectsGrid.innerHTML = '<div class="loading">No projects found</div>';
