@@ -19,7 +19,7 @@
         @property --dynamic-secondary-color {
           syntax: '<color>';
           inherits: false;
-          initial-value: rgb(236, 252, 203); /* Original from Color Sample */
+          initial-value: rgb(236, 252, 203);
         }
         @property --gradient-x1 {
           syntax: '<percentage>';
@@ -43,126 +43,68 @@
         }
 
         @keyframes animateBackground {
-          0% {
-            --gradient-x1: 80%;
-            --gradient-y1: 50%;
-            --gradient-x2: 20%;
-            --gradient-y2: 100%;
-          }
-          25% {
-            --gradient-x1: 60%;
-            --gradient-y1: 30%;
-            --gradient-x2: 40%;
-            --gradient-y2: 70%;
-          }
-          50% {
-            --gradient-x1: 20%;
-            --gradient-y1: 50%;
-            --gradient-x2: 80%;
-            --gradient-y2: 0%;
-          }
-          75% {
-            --gradient-x1: 40%;
-            --gradient-y1: 70%;
-            --gradient-x2: 60%;
-            --gradient-y2: 30%;
-          }
-          100% {
-            --gradient-x1: 80%;
-            --gradient-y1: 50%;
-            --gradient-x2: 20%;
-            --gradient-y2: 100%;
-          }
+          0%   { --gradient-x1: 80%; --gradient-y1: 50%; --gradient-x2: 20%; --gradient-y2: 100%; }
+          25%  { --gradient-x1: 60%; --gradient-y1: 30%; --gradient-x2: 40%; --gradient-y2: 70%; }
+          50%  { --gradient-x1: 20%; --gradient-y1: 50%; --gradient-x2: 80%; --gradient-y2: 0%; }
+          75%  { --gradient-x1: 40%; --gradient-y1: 70%; --gradient-x2: 60%; --gradient-y2: 30%; }
+          100% { --gradient-x1: 80%; --gradient-y1: 50%; --gradient-x2: 20%; --gradient-y2: 100%; }
         }
 
-        /* Base styles */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
         }
-        
+
         body {
-            background-image: 
-                /* Dynamic accent colors using --dynamic-secondary-color, animated positions */
+            background-image:
                 radial-gradient(at var(--gradient-x1) var(--gradient-y1), var(--dynamic-secondary-color) 0%, transparent 75%),
                 radial-gradient(at var(--gradient-x2) var(--gradient-y2), var(--dynamic-secondary-color) 0%, transparent 75%),
-                /* Static white/off-white gradients from Color Sample */
-                radial-gradient(at 50% 0%, rgba(255, 255, 255, 0.8) 0%, transparent 75%),
-                radial-gradient(at 80% 0%, rgb(238, 242, 255) 0%, transparent 75%),
-                radial-gradient(at 0% 50%, rgb(255, 255, 255) 0%, transparent 75%),
-                radial-gradient(at 0% 100%, rgb(255, 255, 255) 0%, transparent 75%);
+                radial-gradient(at 50% 0%, rgba(255,255,255,0.8) 0%, transparent 75%),
+                radial-gradient(at 80% 0%, rgb(238,242,255) 0%, transparent 75%),
+                radial-gradient(at 0% 50%, rgb(255,255,255) 0%, transparent 75%),
+                radial-gradient(at 0% 100%, rgb(255,255,255) 0%, transparent 75%);
             background-attachment: fixed;
-            background-color: #f9fafb; /* From Color Sample */
+            background-color: #f9fafb;
             color: #333;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
             min-height: 100vh;
             padding: 20px;
             position: relative;
             overflow-x: hidden;
-            transition: --dynamic-secondary-color 1s ease; /* Smooth transition for the dynamic color */
-            animation: animateBackground 30s infinite linear; /* Added background animation */
+            transition: --dynamic-secondary-color 1s ease;
+            animation: animateBackground 30s infinite linear;
+            scrollbar-width: none;
         }
 
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: 
-                /* Existing 60px grid */
-                linear-gradient(to right, rgba(255, 255, 255, 0.8) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(255, 255, 255, 0.8) 1px, transparent 1px),
-                /* New finer 20px sub-grid with lower opacity */
-                linear-gradient(to right, rgba(255, 255, 255, 0.4) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(255, 255, 255, 0.4) 1px, transparent 1px);
-            background-size: 60px 60px, 60px 60px, 20px 20px, 20px 20px; /* Sizes for both grids */
-            z-index: -2;
+        body::-webkit-scrollbar {
+            display: none;
         }
 
-        body::after {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                radial-gradient(circle at 0% 0%, rgba(236, 242, 255, 0.4) 0%, transparent 50%),
-                radial-gradient(circle at 100% 0%, rgba(236, 252, 203, 0.4) 0%, transparent 50%),
-                radial-gradient(circle at 100% 100%, rgba(236, 242, 255, 0.4) 0%, transparent 50%),
-                radial-gradient(circle at 0% 100%, rgba(236, 252, 203, 0.4) 0%, transparent 50%);
-            z-index: -1;
-            filter: blur(60px);
-        }
-
-        /* Floating icons styles */
+        /* Floating icons */
         .floating-icon-container {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            pointer-events: none; /* So they don't interfere with clicks */
-            z-index: -1; /* Behind body::after but above body::before */
+            pointer-events: none;
+            z-index: -1;
             overflow: hidden;
         }
 
         .floating-icon {
             position: absolute;
-            color: rgba(0, 0, 0, 0.1); /* Monochromatic, subtle */
-            font-size: 60px; /* Further increased base size */
+            color: rgba(0, 0, 0, 0.1);
+            font-size: 60px;
             animation: float 15s infinite ease-in-out;
             opacity: 0;
         }
 
-        .floating-icon.icon-1 { top: 10%; left: 15%; animation-delay: 0s; font-size: 65px; } 
+        .floating-icon.icon-1 { top: 10%; left: 15%; animation-delay: 0s; font-size: 65px; }
         .floating-icon.icon-2 { top: 20%; left: 80%; animation-delay: -1.5s; font-size: 55px; }
         .floating-icon.icon-3 { top: 70%; left: 10%; animation-delay: -3s; font-size: 70px; }
         .floating-icon.icon-4 { top: 80%; left: 75%; animation-delay: -4.5s; font-size: 60px; }
@@ -172,50 +114,119 @@
         .floating-icon.icon-8 { top: 50%; left: 5%; animation-delay: -10.5s; font-size: 68px; }
         .floating-icon.icon-9 { top: 30%; left: 90%; animation-delay: -12s; font-size: 50px; }
         .floating-icon.icon-10 { top: 60%; left: 60%; animation-delay: -13.5s; font-size: 60px; }
-        .floating-icon.icon-11 { top: 15%; left: 65%; animation-delay: -0.5s; font-size: 62px; } /* Book */
-        .floating-icon.icon-12 { top: 85%; left: 50%; animation-delay: -2.5s; font-size: 58px; } /* Graph */
-        .floating-icon.icon-13 { top: 5%; left: 5%; animation-delay: -5.5s; font-size: 65px; }   /* Bag */
-        .floating-icon.icon-14 { top: 95%; left: 85%; animation-delay: -8.5s; font-size: 70px; } /* Code */
-
+        .floating-icon.icon-11 { top: 15%; left: 65%; animation-delay: -0.5s; font-size: 62px; }
+        .floating-icon.icon-12 { top: 85%; left: 50%; animation-delay: -2.5s; font-size: 58px; }
+        .floating-icon.icon-13 { top: 5%; left: 5%; animation-delay: -5.5s; font-size: 65px; }
+        .floating-icon.icon-14 { top: 95%; left: 85%; animation-delay: -8.5s; font-size: 70px; }
 
         @keyframes float {
-            0% { 
-                transform: translateY(0px) translateX(0px) rotate(0deg); 
-                opacity: 0; 
+            0% {
+                transform: translateY(0px) translateX(0px) rotate(0deg);
+                opacity: 0;
             }
-            25% { 
-                opacity: 1; 
+            25% { opacity: 1; }
+            50% {
+                transform: translateY(-60vh) translateX(40vw) rotate(180deg);
             }
-            50% { 
-                transform: translateY(-60vh) translateX(40vw) rotate(180deg); /* Significantly increased travel & rotation */
-            }
-            75% { 
-                opacity: 1; 
-            }
-            100% { 
-                transform: translateY(0px) translateX(0px) rotate(360deg); /* Return to start, but complete rotation */
-                opacity: 0; 
+            75% { opacity: 1; }
+            100% {
+                transform: translateY(0px) translateX(0px) rotate(360deg);
+                opacity: 0;
             }
         }
 
-        @keyframes cycleMenuButtonColor {
-            0%    { background-color: rgba(152, 251, 152, 0.8); } /* PaleGreen/Mint */
-            22.5% { background-color: rgba(152, 251, 152, 0.8); } /* End PaleGreen hold */
-            25%   { background-color: rgba(255, 255, 0, 0.8); }   /* Yellow */
-            47.5% { background-color: rgba(255, 255, 0, 0.8); }   /* End Yellow hold */
-            50%   { background-color: rgba(65, 105, 225, 0.8); }  /* Blueprint Blue (Royal) */
-            72.5% { background-color: rgba(65, 105, 225, 0.8); }  /* End Blue hold */
-            75%   { background-color: rgba(220, 220, 220, 0.8); }  /* Grey */
-            97.5% { background-color: rgba(220, 220, 220, 0.8); }  /* End Grey hold */
-            100%  { background-color: rgba(152, 251, 152, 0.8); } /* Loop back to PaleGreen */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image:
+                linear-gradient(to right, rgba(255,255,255,0.8) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255,255,255,0.8) 1px, transparent 1px),
+                linear-gradient(to right, rgba(255,255,255,0.4) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255,255,255,0.4) 1px, transparent 1px);
+            background-size: 60px 60px, 60px 60px, 20px 20px, 20px 20px;
+            z-index: -2;
         }
 
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background:
+                radial-gradient(circle at 0% 0%, rgba(236,242,255,0.4) 0%, transparent 50%),
+                radial-gradient(circle at 100% 0%, rgba(236,252,203,0.4) 0%, transparent 50%),
+                radial-gradient(circle at 100% 100%, rgba(236,242,255,0.4) 0%, transparent 50%),
+                radial-gradient(circle at 0% 100%, rgba(236,252,203,0.4) 0%, transparent 50%);
+            z-index: -1;
+            filter: blur(60px);
+        }
+
+        /* ===== LAYOUT ===== */
         .container {
             width: 100%;
             max-width: 1000px;
         }
-        
-        /* Profile section */
+
+        .section {
+            padding: 60px 0;
+        }
+
+        .section-links {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 20px 0;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: #333;
+        }
+
+        .section-blog {
+            width: 100vw;
+            margin-left: calc(-50vw + 50%);
+        }
+
+        .section-blog .section-header {
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 0 20px;
+        }
+
+        .section-blog .blog-expanded {
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 0 20px;
+        }
+
+        .see-all-btn {
+            background: none;
+            border: none;
+            color: #007AFF;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            padding: 6px 14px;
+            border-radius: 20px;
+            transition: background 0.2s ease;
+        }
+
+        .see-all-btn:hover {
+            background: rgba(0, 122, 255, 0.08);
+        }
+
+        /* ===== PROFILE / LINKS SECTION ===== */
         .profile {
             display: flex;
             flex-direction: column;
@@ -223,8 +234,7 @@
             margin-bottom: 40px;
             text-align: center;
         }
-        
-        /* Profile section */
+
         .profile-img {
             width: 150px;
             height: 150px;
@@ -232,43 +242,42 @@
             object-fit: cover;
             margin-bottom: 20px;
             border: 4px solid white;
-            box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 0 4px rgba(0,0,0,0.1);
         }
-        
+
         .profile h1 {
             font-size: 2.5rem;
             margin-bottom: 10px;
         }
-        
+
         .profile p {
             font-size: 1.2rem;
             color: #666;
         }
-        
-        /* Social links grid */
+
         .social-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            grid-template-columns: repeat(3, 1fr);
             gap: 20px;
             width: 100%;
         }
-        
+
         .social-card {
             background-color: #fff;
             border-radius: 12px;
             padding: 20px;
             display: flex;
             align-items: center;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
             transition: transform 0.2s ease;
             text-decoration: none;
             color: inherit;
         }
-        
+
         .social-card:hover {
             transform: translateY(-5px);
         }
-        
+
         .social-icon {
             width: 40px;
             height: 40px;
@@ -277,321 +286,625 @@
             align-items: center;
             justify-content: center;
         }
-        
+
         .social-icon img {
             max-width: 100%;
             max-height: 100%;
         }
-        
-        .social-info {
-            flex: 1;
-        }
-        
+
+        .social-info { flex: 1; }
+
         .social-info h3 {
             font-size: 1.1rem;
             margin-bottom: 5px;
         }
-        
-        .social-info p {
-            font-size: 0.9rem;
-            color: #888;
+
+        /* ===== BLOG SECTION — MARQUEE AUTO-SCROLL ===== */
+        .blog-scroll-wrapper {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
         }
-        
-        /* Responsive adjustments */
+
+        .blog-marquee-track {
+            display: flex;
+            gap: 20px;
+            width: max-content;
+            animation: marqueeScroll 40s linear infinite;
+            padding: 10px 0 20px;
+        }
+
+        .blog-marquee-track:hover {
+            animation-play-state: paused;
+        }
+
+        @keyframes marqueeScroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .blog-marquee-track .post-card {
+            flex: 0 0 280px;
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: transform 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 180px;
+        }
+
+        .blog-marquee-track .post-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .blog-marquee-track .post-title {
+            font-size: 1.05rem;
+            margin-bottom: 10px;
+            color: #333;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .blog-marquee-track .post-excerpt {
+            font-size: 0.85rem;
+            color: #666;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin-bottom: 12px;
+            flex: 1;
+        }
+
+        .blog-marquee-track .read-more {
+            color: #007AFF;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.85rem;
+        }
+
+        .blog-marquee-track .read-more:hover {
+            text-decoration: underline;
+        }
+
+        /* ===== BLOG SECTION — EXPANDED GRID ===== */
+        .blog-expanded {
+            display: none;
+        }
+
+        .blog-expanded.active {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .blog-expanded .post-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: transform 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .blog-expanded .post-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .blog-expanded .post-title {
+            font-size: 1.15rem;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .blog-expanded .post-excerpt {
+            font-size: 0.9rem;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            flex: 1;
+        }
+
+        .blog-expanded .read-more {
+            color: #007AFF;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .blog-expanded .read-more:hover {
+            text-decoration: underline;
+        }
+
+        /* ===== PROJECTS SECTION ===== */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            width: 100%;
+            align-items: stretch;
+        }
+
+        .project-card {
+            background-color: #fff;
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            text-decoration: none;
+            color: inherit;
+            height: 70px;
+            min-height: 70px;
+            max-height: 70px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .project-icon {
+            width: 32px;
+            height: 32px;
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .project-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .project-info h3 {
+            font-size: 0.95rem;
+            margin: 0;
+            color: #333;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1000px) {
+            .projects-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
         @media (max-width: 768px) {
             .social-grid {
-                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                grid-template-columns: repeat(2, 1fr);
             }
-            
+
+            .blog-expanded.active {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .projects-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
             .profile h1 {
                 font-size: 2rem;
             }
+
+            .section-title {
+                font-size: 1.6rem;
+            }
+
+            .section {
+                padding: 40px 0;
+            }
+
+            .blog-marquee-track .post-card {
+                flex: 0 0 250px;
+                min-height: 160px;
+            }
         }
-        
+
+        @media (max-width: 600px) {
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
         @media (max-width: 480px) {
             .social-grid {
                 grid-template-columns: 1fr;
             }
-            
+
+            .blog-expanded.active {
+                grid-template-columns: 1fr;
+            }
+
             .profile-img {
                 width: 120px;
                 height: 120px;
             }
-        }
-    </style>
-    <style>
-        /* Add these new styles */
-        .menu-button {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            width: 48px; /* Increased size */
-            height: 48px; /* Increased size */
-            border-radius: 50%;
-            animation: cycleMenuButtonColor 40s infinite linear;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px); /* Safari support */
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-            border: none;
-            cursor: pointer;
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        }
 
-        .menu-button svg {
-            width: 24px;
-            height: 24px;
-            fill: #333;
-            transition: transform 0.3s ease;
-        }
-
-        .menu-button.active svg {
-            transform: rotate(90deg);
-        }
-
-        .menu-options {
-            position: fixed;
-            top: 70px;
-            right: 20px;
-            display: none;
-            flex-direction: column;
-            gap: 10px;
-            z-index: 999;
-        }
-
-        .menu-options.active {
-            display: flex;
-        }
-
-        .menu-option {
-            padding: 15px 30px;
-            border-radius: 30px;
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px); /* Safari support */
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            color: #666;
-            font-size: 18px;
-            transition: all 0.3s ease;
-            min-width: 120px;
-        }
-
-        .menu-option:hover {
-            background: white;
-            color: #333;
-            transform: translateX(-5px);
+            .blog-marquee-track .post-card {
+                flex: 0 0 220px;
+                min-height: 150px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="floating-icon-container">
-        <!-- Using simple text characters as placeholders for SVGs for now -->
-        <!-- Replace these with actual <svg> elements or an icon font later -->
-        <span class="floating-icon icon-1">💡</span> <!-- Lightbulb -->
-        <span class="floating-icon icon-2">🚀</span> <!-- Rocket -->
-        <span class="floating-icon icon-3">⚙️</span> <!-- Gear -->
-        <span class="floating-icon icon-4">⭐</span> <!-- Star -->
-        <span class="floating-icon icon-5">💻</span> <!-- Code/Laptop -->
-        <span class="floating-icon icon-6">🎨</span> <!-- Palette -->
-        <span class="floating-icon icon-7">🏆</span> <!-- Trophy -->
-        <span class="floating-icon icon-8">💬</span> <!-- Speech Bubble -->
-        <span class="floating-icon icon-9">💲</span> <!-- Dollar -->
-        <span class="floating-icon icon-10">🎮</span> <!-- Gamepad -->
-        <span class="floating-icon icon-11">📚</span> <!-- Book -->
-        <span class="floating-icon icon-12">📈</span> <!-- Graph -->
-        <span class="floating-icon icon-13">💼</span> <!-- Business Bag -->
-        <span class="floating-icon icon-14">&lt;/&gt;</span> <!-- Programming/Code -->
+        <span class="floating-icon icon-1">💡</span>
+        <span class="floating-icon icon-2">🚀</span>
+        <span class="floating-icon icon-3">⚙️</span>
+        <span class="floating-icon icon-4">⭐</span>
+        <span class="floating-icon icon-5">💻</span>
+        <span class="floating-icon icon-6">🎨</span>
+        <span class="floating-icon icon-7">🏆</span>
+        <span class="floating-icon icon-8">💬</span>
+        <span class="floating-icon icon-9">💲</span>
+        <span class="floating-icon icon-10">🎮</span>
+        <span class="floating-icon icon-11">📚</span>
+        <span class="floating-icon icon-12">📈</span>
+        <span class="floating-icon icon-13">💼</span>
+        <span class="floating-icon icon-14">&lt;/&gt;</span>
     </div>
-
-    <!-- Add this right after the body tag -->
-    <!-- Update the menu HTML structure -->
-    <button class="menu-button" onclick="toggleMenu()" title="Toggle Menu">
-        <svg viewBox="0 0 24 24">
-            <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
-        </svg>
-    </button>
-    <div class="menu-options">
-        <a href="/blogs/" class="menu-option">Blogs</a>
-        <a href="/tools/" class="menu-option">Tools</a>
-    </div>
-
-    <!-- Add this script before the closing body tag -->
-    <script>
-        function toggleMenu() {
-            const button = document.querySelector('.menu-button');
-            const options = document.querySelector('.menu-options');
-            button.classList.toggle('active');
-            options.classList.toggle('active');
-        }
-
-        // Script for dynamic background color cycling
-        document.addEventListener('DOMContentLoaded', function() {
-            const bodyElement = document.body;
-            const colors = [
-                'rgb(236, 252, 203)', // Original from Color Sample
-                'rgb(255, 220, 100)', // Modern Yellow
-                'rgb(170, 210, 230)'  // Modern Light Blue
-            ];
-            let currentColorIndex = 0;
-
-            // Set initial color
-            bodyElement.style.setProperty('--dynamic-secondary-color', colors[currentColorIndex]);
-
-            setInterval(() => {
-                currentColorIndex = (currentColorIndex + 1) % colors.length;
-                bodyElement.style.setProperty('--dynamic-secondary-color', colors[currentColorIndex]);
-            }, 10000); // Change color every 10 seconds
-        });
-    </script>
 
     <div class="container">
-        <div class="profile">
-            <img src="res/Profile.webp" alt="RTBRuhan" class="profile-img">
-            <h1>RTBRuhan</h1>
-            <p>Creative Director @ Null Station</p>
+
+        <!-- ===== LINKS SECTION ===== -->
+        <div class="section section-links" id="links">
+            <div class="profile">
+                <img src="res/Profile.webp" alt="RTBRuhan" class="profile-img">
+                <h1>RTBRuhan</h1>
+                <p>Creative Director @ Null Station</p>
+            </div>
+
+            <div class="social-grid">
+                <a href="https://facebook.com/rtbruhan" class="social-card">
+                    <div class="social-icon">
+                        <img src="https://cdn-icons-png.flaticon.com/512/124/124010.png" alt="Facebook Icon">
+                    </div>
+                    <div class="social-info"><h3>Facebook</h3></div>
+                </a>
+
+                <a href="https://instagram.com/rtbruhan" class="social-card">
+                    <div class="social-icon">
+                        <img src="https://cdn-icons-png.flaticon.com/512/174/174855.png" alt="Instagram Icon">
+                    </div>
+                    <div class="social-info"><h3>Instagram</h3></div>
+                </a>
+
+                <a href="https://linkedin.com/in/rtbruhan0" class="social-card">
+                    <div class="social-icon">
+                        <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="LinkedIn Icon">
+                    </div>
+                    <div class="social-info"><h3>LinkedIn</h3></div>
+                </a>
+
+                <a href="https://twitter.com/rtbruhan" class="social-card">
+                    <div class="social-icon">
+                        <img src="https://cdn-icons-png.flaticon.com/512/733/733579.png" alt="Twitter Icon">
+                    </div>
+                    <div class="social-info"><h3>Twitter</h3></div>
+                </a>
+
+                <a href="https://youtube.com/rtbruhan" class="social-card">
+                    <div class="social-icon">
+                        <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube Icon">
+                    </div>
+                    <div class="social-info"><h3>YouTube</h3></div>
+                </a>
+
+                <a href="https://wa.me/+8801307031932" class="social-card">
+                    <div class="social-icon">
+                        <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp Icon">
+                    </div>
+                    <div class="social-info"><h3>WhatsApp</h3></div>
+                </a>
+
+                <a href="https://www.imdb.com/name/nm13671189/" class="social-card">
+                    <div class="social-icon">
+                        <img src="https://cdn-icons-png.flaticon.com/512/5977/5977585.png" alt="IMDb Icon">
+                    </div>
+                    <div class="social-info"><h3>IMDb</h3></div>
+                </a>
+
+                <a href="mailto:ruhan.rohan78426@gmail.com" class="social-card">
+                    <div class="social-icon">
+                        <img src="https://cdn-icons-png.flaticon.com/512/5968/5968534.png" alt="Gmail Icon">
+                    </div>
+                    <div class="social-info"><h3>Gmail</h3></div>
+                </a>
+
+                <a href="https://reddit.com/rtbruhan" class="social-card">
+                    <div class="social-icon">
+                        <img src="https://cdn-icons-png.flaticon.com/512/1384/1384019.png" alt="Reddit Icon">
+                    </div>
+                    <div class="social-info"><h3>Reddit</h3></div>
+                </a>
+
+                <a href="https://behance.net/rtbruhan" class="social-card">
+                    <div class="social-icon">
+                        <img src="https://cdn-icons-png.flaticon.com/512/145/145799.png" alt="Behance Icon">
+                    </div>
+                    <div class="social-info"><h3>Behance</h3></div>
+                </a>
+
+                <a href="https://medium.com/@rtbruhan" class="social-card">
+                    <div class="social-icon">
+                        <img src="https://cdn-icons-png.flaticon.com/512/5968/5968906.png" alt="Medium Icon">
+                    </div>
+                    <div class="social-info"><h3>Medium</h3></div>
+                </a>
+
+                <a href="https://github.com/rtbruhan" class="social-card">
+                    <div class="social-icon">
+                        <img src="https://cdn-icons-png.flaticon.com/512/733/733553.png" alt="GitHub Icon">
+                    </div>
+                    <div class="social-info"><h3>GitHub</h3></div>
+                </a>
+            </div>
         </div>
-        
-        <div class="social-grid">
-            <!-- Facebook -->
-            <a href="https://facebook.com/rtbruhan" class="social-card facebook">
-                <div class="social-icon">
-                    <img src="https://cdn-icons-png.flaticon.com/512/124/124010.png" alt="Facebook Icon">
-                </div>
-                <div class="social-info">
-                    <h3>Facebook</h3>
-                    <!-- <p>facebook.com</p> -->
-                </div>
-            </a>
-            
-            <!-- Instagram -->
-            <a href="https://instagram.com/rtbruhan" class="social-card instagram">
-                <div class="social-icon">
-                    <img src="https://cdn-icons-png.flaticon.com/512/174/174855.png" alt="Instagram Icon">
-                </div>
-                <div class="social-info">
-                    <h3>Instagram</h3>
-                    <!-- <p>@rtbruhan</p> -->
-                </div>
-            </a>
 
-            <!-- LinkedIn -->
-            <a href="https://linkedin.com/in/rtbruhan0" class="social-card linkedin">
-                <div class="social-icon">
-                    <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="LinkedIn Icon">
-                </div>
-                <div class="social-info">
-                    <h3>LinkedIn</h3>
-                    <!-- <p>linkedin.com</p> -->
-                </div>
-            </a>
-            
-            <!-- Twitter -->
-            <a href="https://twitter.com/rtbruhan" class="social-card twitter">
-                <div class="social-icon">
-                    <img src="https://cdn-icons-png.flaticon.com/512/733/733579.png" alt="Twitter Icon">
-                </div>
-                <div class="social-info">
-                    <h3>Twitter</h3>
-                    <!-- <p>@rtbruhan</p> -->
-                </div>
-            </a>
-            
-            <!-- YouTube -->
-            <a href="https://youtube.com/rtbruhan" class="social-card youtube">
-                <div class="social-icon">
-                    <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube Icon">
-                </div>
-                <div class="social-info">
-                    <h3>YouTube</h3>
-                    <!-- <p>@rtbruhan</p> -->
-                </div>
-            </a>
+        <!-- ===== BLOG SECTION ===== -->
+        <div class="section section-blog" id="blogs">
+            <div class="section-header">
+                <h2 class="section-title">Blog Posts</h2>
+                <button class="see-all-btn" id="seeAllBtn" onclick="toggleBlogView()">See All</button>
+            </div>
 
-            <!-- WhatsApp -->
-            <a href="https://wa.me/+8801307031932" class="social-card whatsapp">
-                <div class="social-icon">
-                    <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp Icon">
+            <div class="blog-scroll-wrapper" id="blogScrollWrapper">
+                <div class="blog-marquee-track" id="blogMarquee">
+                    <div class="loading">Loading blogs...</div>
                 </div>
-                <div class="social-info">
-                    <h3>WhatsApp</h3>
-                    <!-- <p>wa.me</p> -->
-                </div>
-            </a>
+            </div>
 
-            <!-- IMDb -->
-            <a href="https://www.imdb.com/name/nm13671189/" class="social-card imdb">
-                <div class="social-icon">
-                    <img src="https://cdn-icons-png.flaticon.com/512/5977/5977585.png" alt="IMDb Icon">
-                </div>
-                <div class="social-info">
-                    <h3>IMDb</h3>
-                    <!-- <p>Director/Producer</p> -->
-                </div>
-            </a>
-            
-                        
-            <!-- Gmail -->
-            <a href="mailto:ruhan.rohan78426@gmail.com" class="social-card gmail">
-                <div class="social-icon">
-                    <img src="https://cdn-icons-png.flaticon.com/512/5968/5968534.png" alt="Gmail Icon">
-                </div>
-                <div class="social-info">
-                    <h3>Gmail</h3>
-                    <!-- <p>your.email@gmail.com</p> -->
-                </div>
-            </a>
- 
-            <!-- Reddit -->
-            <a href="https://reddit.com/rtbruhan" class="social-card reddit">
-                <div class="social-icon">
-                    <img src="https://cdn-icons-png.flaticon.com/512/1384/1384019.png" alt="Reddit Icon">
-                </div>
-                <div class="social-info">
-                    <h3>Reddit</h3>
-                    <!-- <p>reddit.com</p> -->
-                </div>
-            </a>
-            
-            <!-- Behance -->
-            <a href="https://behance.net/rtbruhan" class="social-card behance">
-                <div class="social-icon">
-                    <img src="https://cdn-icons-png.flaticon.com/512/145/145799.png" alt="Behance Icon">
-                </div>
-                <div class="social-info">
-                    <h3>Behance</h3>
-                </div>
-            </a>
-            
-            
-            <!-- Medium -->
-            <a href="https://medium.com/@rtbruhan" class="social-card medium">
-                <div class="social-icon">
-                    <img src="https://cdn-icons-png.flaticon.com/512/5968/5968906.png" alt="Medium Icon">
-                </div>
-                <div class="social-info">
-                    <h3>Medium</h3>
-                    <!-- <p>medium.com</p> -->
-                </div>
-            </a>
-            
-            <!-- GitHub -->
-            <a href="https://github.com/rtbruhan" class="social-card github">
-                <div class="social-icon">
-                    <img src="https://cdn-icons-png.flaticon.com/512/733/733553.png" alt="GitHub Icon">
-                </div>
-                <div class="social-info">
-                    <h3>GitHub</h3>
-                </div>
-            </a>
-
+            <div class="blog-expanded" id="blogExpanded"></div>
         </div>
+
+        <!-- ===== PROJECTS SECTION ===== -->
+        <div class="section" id="projects">
+            <h2 class="section-title" style="text-align:center; margin-bottom:30px;">Projects</h2>
+            <div class="projects-grid" id="projectsGrid">
+                <div class="loading">Loading projects...</div>
+            </div>
+        </div>
+
     </div>
+
+    <script>
+    let allPosts = [];
+    let blogExpanded = false;
+
+    function toggleBlogView() {
+        const scrollEl = document.getElementById('blogScrollWrapper');
+        const expandedEl = document.getElementById('blogExpanded');
+        const btn = document.getElementById('seeAllBtn');
+
+        blogExpanded = !blogExpanded;
+
+        if (blogExpanded) {
+            scrollEl.style.display = 'none';
+            expandedEl.classList.add('active');
+            btn.textContent = 'Collapse';
+            renderExpandedBlogs();
+        } else {
+            scrollEl.style.display = 'block';
+            expandedEl.classList.remove('active');
+            btn.textContent = 'See All';
+        }
+    }
+
+    function renderExpandedBlogs() {
+        const expandedEl = document.getElementById('blogExpanded');
+        expandedEl.innerHTML = '';
+
+        allPosts.forEach(post => {
+            const excerpt = post.description
+                .replace(/<[^>]*>/g, '')
+                .replace(/\s+/g, ' ')
+                .substring(0, 150) + '...';
+
+            const card = document.createElement('div');
+            card.className = 'post-card';
+            card.innerHTML = `
+                <h2 class="post-title">${post.title}</h2>
+                <p class="post-excerpt">${excerpt}</p>
+                <a href="${post.link}" class="read-more" target="_blank">Read on Medium &rarr;</a>
+            `;
+            expandedEl.appendChild(card);
+        });
+    }
+
+    function createPostCard(post) {
+        const excerpt = post.description
+            .replace(/<[^>]*>/g, '')
+            .replace(/\s+/g, ' ')
+            .substring(0, 100) + '...';
+
+        const card = document.createElement('div');
+        card.className = 'post-card';
+        card.innerHTML = `
+            <div>
+                <h2 class="post-title">${post.title}</h2>
+                <p class="post-excerpt">${excerpt}</p>
+            </div>
+            <a href="${post.link}" class="read-more" target="_blank">Read on Medium &rarr;</a>
+        `;
+        return card;
+    }
+
+    async function loadPosts() {
+        const marquee = document.getElementById('blogMarquee');
+
+        try {
+            const CORS_PROXY = "https://api.rss2json.com/v1/api.json?rss_url=";
+            const MEDIUM_URL = encodeURIComponent("https://rtbruhan.medium.com/feed");
+            const fetchUrl = `${CORS_PROXY}${MEDIUM_URL}&timestamp=${new Date().getTime()}`;
+
+            const response = await fetch(fetchUrl);
+            const data = await response.json();
+
+            marquee.innerHTML = '';
+
+            if (data.status === 'ok' && data.items && data.items.length > 0) {
+                allPosts = data.items;
+
+                data.items.forEach(post => marquee.appendChild(createPostCard(post)));
+                data.items.forEach(post => marquee.appendChild(createPostCard(post)));
+            } else {
+                marquee.innerHTML = '<div class="post-card"><p>No posts available yet. Check back soon!</p></div>';
+            }
+        } catch (error) {
+            console.error('Error loading posts:', error);
+            marquee.innerHTML = '<div class="post-card"><p>Error loading posts. Please try again later.</p></div>';
+        }
+    }
+
+    async function loadProjects() {
+        try {
+            const reposResponse = await fetch('https://api.github.com/users/rtbruhan/repos');
+            const repos = await reposResponse.json();
+            const projectsGrid = document.getElementById('projectsGrid');
+            projectsGrid.innerHTML = '';
+
+            repos.forEach(repo => {
+                if (repo.has_pages && repo.name !== 'rtbruhan.github.io') {
+                    addProjectCard({
+                        name: repo.name.replace(/-/g, ' '),
+                        description: repo.description || 'A useful tool',
+                        url: `https://rtbruhan.github.io/${repo.name}`,
+                        type: 'web'
+                    });
+                }
+            });
+
+            const extensions = [
+                {
+                    name: 'Life Log',
+                    description: 'Track your life\'s countdown and document your journey with a clean, daily journal.',
+                    url: 'https://chromewebstore.google.com/detail/life-log/mcbohapffdikfohpfbfabpfgngobngdc',
+                    type: 'extension'
+                },
+                {
+                    name: 'KeepClick',
+                    description: 'Keep your mouse clicks active even when the tab is not focused',
+                    url: 'https://chromewebstore.google.com/detail/keepclick/elkojcbndcakedbgonbgkaijlohgciee',
+                    type: 'extension'
+                },
+                {
+                    name: 'Facebook PiP Blocker',
+                    description: 'Block Facebook Picture in Picture videos',
+                    url: 'https://chromewebstore.google.com/detail/facebook-pip-blocker/cjomjfncnflapbbdifmfepcdbenlfcad',
+                    type: 'extension'
+                },
+                {
+                    name: 'Facebook Auto Unmute',
+                    description: 'Automatically unmute Facebook videos',
+                    url: 'https://chromewebstore.google.com/detail/facebook-auto-unmute/oefamibbccndbjjcfcdohckidbekkieg',
+                    type: 'extension'
+                },
+                {
+                    name: 'Quick Notes & Reminders',
+                    description: 'Quick and easy note-taking and reminder tool',
+                    url: 'https://chromewebstore.google.com/detail/quick-notes-reminders/nhfjjjpnjekaojnnammcddigkimelgno',
+                    type: 'extension'
+                },
+                {
+                    name: 'Apex Agent',
+                    description: 'Connect AI to your browser via MCP protocol. Automate, control, record, and debug with 69+ tools.',
+                    url: 'https://chromewebstore.google.com/detail/apex-agent/pmpkkbjdkmcjcekkokcgakngkbmgehcp',
+                    type: 'extension'
+                },
+                {
+                    name: 'InstaHand',
+                    description: 'Auto-unmute Instagram videos, native controls, keyboard shortcuts, and DM reel navigation',
+                    url: 'https://chromewebstore.google.com/detail/instahand/bkagnibhkeohgjljdbpppmfbanihgkid',
+                    type: 'extension'
+                },
+                {
+                    name: 'Auto Recorder',
+                    description: 'Automatically trigger OBS recording when visiting meeting sites like Google Meet, Zoom, and Teams',
+                    url: 'https://chromewebstore.google.com/detail/auto-recorder/gonlojcnmkcicaphkbkneejblnalmhjl',
+                    type: 'extension'
+                }
+            ];
+
+            extensions.forEach(ext => addProjectCard(ext));
+
+            if (projectsGrid.children.length === 0) {
+                projectsGrid.innerHTML = '<div class="loading">No projects found</div>';
+            }
+        } catch (error) {
+            console.error('Error fetching projects:', error);
+            document.getElementById('projectsGrid').innerHTML = '<div class="loading">Error loading projects</div>';
+        }
+    }
+
+    function addProjectCard(project) {
+        const projectsGrid = document.getElementById('projectsGrid');
+        const card = document.createElement('a');
+        card.href = project.url;
+        card.className = 'project-card';
+        card.target = '_blank';
+        card.title = project.description;
+
+        const icon = project.type === 'extension'
+            ? '<path d="M20.5 11H19V7c0-1.1-.9-2-2-2h-4V3.5C13 2.12 11.88 1 10.5 1S8 2.12 8 3.5V5H4c-1.1 0-1.99.9-1.99 2v3.8H3.5c1.49 0 2.7 1.21 2.7 2.7s-1.21 2.7-2.7 2.7H2V20c0 1.1.9 2 2 2h3.8v-1.5c0-1.49 1.21-2.7 2.7-2.7 1.49 0 2.7 1.21 2.7 2.7V22H17c1.1 0 2-.9 2-2v-4h1.5c1.38 0 2.5-1.12 2.5-2.5S21.88 11 20.5 11z"/>'
+            : '<path d="M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.7C.4 7.1.9 10.1 2.9 12.1c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.5-.4.5-1.1.1-1.4z"/>';
+
+        card.innerHTML = `
+            <div class="project-icon">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="#333">${icon}</svg>
+            </div>
+            <div class="project-info">
+                <h3>${project.name}</h3>
+            </div>
+        `;
+
+        projectsGrid.appendChild(card);
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        loadPosts();
+        loadProjects();
+
+        const bodyElement = document.body;
+        const colors = [
+            'rgb(236, 252, 203)',
+            'rgb(255, 220, 100)',
+            'rgb(170, 210, 230)'
+        ];
+        let currentColorIndex = 0;
+
+        bodyElement.style.setProperty('--dynamic-secondary-color', colors[currentColorIndex]);
+
+        setInterval(() => {
+            currentColorIndex = (currentColorIndex + 1) % colors.length;
+            bodyElement.style.setProperty('--dynamic-secondary-color', colors[currentColorIndex]);
+        }, 10000);
+    });
+    </script>
 </body>
 </html>
