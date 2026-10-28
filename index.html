@@ -832,26 +832,103 @@
         return card;
     }
 
+    function normalizePosts(items) {
+        if (!Array.isArray(items)) return [];
+
+        return items
+            .map(item => ({
+                title: (item.title || '').trim(),
+                link: (item.link || item.url || '').split('?')[0].trim(),
+                description: item.description || item.content_html || item.content || ''
+            }))
+            .filter(post => post.title && post.link);
+    }
+
+    function parseMediumRss(xmlText) {
+        const doc = new DOMParser().parseFromString(xmlText, 'text/xml');
+        if (doc.querySelector('parsererror')) return [];
+
+        return Array.from(doc.querySelectorAll('item')).map(item => {
+            const encoded = item.getElementsByTagNameNS('http://purl.org/rss/1.0/modules/content/', 'encoded')[0];
+            return {
+                title: (item.querySelector('title')?.textContent || '').trim(),
+                link: (item.querySelector('link')?.textContent || '').split('?')[0].trim(),
+                description: encoded?.textContent || item.querySelector('description')?.textContent || ''
+            };
+        }).filter(post => post.title && post.link);
+    }
+
+    function renderPosts(posts) {
+        const marquee = document.getElementById('blogMarquee');
+        allPosts = posts;
+        marquee.innerHTML = '';
+
+        if (!posts.length) {
+            marquee.innerHTML = '<div class="post-card"><p>No posts available yet. Check back soon!</p></div>';
+            return;
+        }
+
+        posts.forEach(post => marquee.appendChild(createPostCard(post)));
+        posts.forEach(post => marquee.appendChild(createPostCard(post)));
+    }
+
+    async function fetchWithTimeout(url, timeoutMs = 5000) {
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), timeoutMs);
+
+        try {
+            const response = await fetch(url, { signal: controller.signal });
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}`);
+            }
+            return response;
+        } finally {
+            clearTimeout(timer);
+        }
+    }
+
+    async function loadCachedPosts() {
+        const response = await fetchWithTimeout('medium-posts.json', 8000);
+        const data = await response.json();
+        return normalizePosts(data.items);
+    }
+
+    async function loadLivePosts() {
+        const feedUrl = 'https://medium.com/feed/@rtbruhan';
+        const liveSources = [
+            async () => {
+                const response = await fetchWithTimeout(`https://api.allorigins.win/raw?url=${encodeURIComponent(feedUrl)}`);
+                return parseMediumRss(await response.text());
+            },
+            async () => {
+                const response = await fetchWithTimeout(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feedUrl)}`);
+                const data = await response.json();
+                return data.status === 'ok' ? normalizePosts(data.items) : [];
+            }
+        ];
+
+        for (const source of liveSources) {
+            try {
+                const posts = await source();
+                if (posts.length) return posts;
+            } catch (error) {
+                console.warn('Live blog source failed:', error);
+            }
+        }
+
+        return [];
+    }
+
     async function loadPosts() {
         const marquee = document.getElementById('blogMarquee');
 
         try {
-            const CORS_PROXY = "https://api.rss2json.com/v1/api.json?rss_url=";
-            const MEDIUM_URL = encodeURIComponent("https://rtbruhan.medium.com/feed");
-            const fetchUrl = `${CORS_PROXY}${MEDIUM_URL}&timestamp=${new Date().getTime()}`;
+            const cachedPosts = await loadCachedPosts();
+            renderPosts(cachedPosts);
 
-            const response = await fetch(fetchUrl);
-            const data = await response.json();
-
-            marquee.innerHTML = '';
-
-            if (data.status === 'ok' && data.items && data.items.length > 0) {
-                allPosts = data.items;
-
-                data.items.forEach(post => marquee.appendChild(createPostCard(post)));
-                data.items.forEach(post => marquee.appendChild(createPostCard(post)));
-            } else {
-                marquee.innerHTML = '<div class="post-card"><p>No posts available yet. Check back soon!</p></div>';
+            const livePosts = await loadLivePosts();
+            if (livePosts.length) {
+                renderPosts(livePosts);
             }
         } catch (error) {
             console.error('Error loading posts:', error);
