@@ -1,0 +1,40 @@
+{
+  "items": [
+    {
+      "name": "least energy",
+      "description": "A landscape that loses one pixel for every recorded death in organised violence since 1989.",
+      "url": "https://rtbruhan.github.io/least-energy",
+      "type": "web"
+    },
+    {
+      "name": "FunnelEstimator",
+      "description": "A simple calculator to visualize the path to your financial targets by estimating key funnel metrics (Reach -> Users -> Customers) and factoring in optional expenses and churn.",
+      "url": "https://rtbruhan.github.io/FunnelEstimator",
+      "type": "web"
+    },
+    {
+      "name": "Osm Terrain Studio",
+      "description": "Browser tool to rotate OSM data, draw a georeferenced box, and export aligned terrain bundles (roads, heightmap, satellite).",
+      "url": "https://rtbruhan.github.io/Osm-Terrain-Studio",
+      "type": "web"
+    },
+    {
+      "name": "WealthProjector",
+      "description": "A useful tool",
+      "url": "https://rtbruhan.github.io/WealthProjector",
+      "type": "web"
+    },
+    {
+      "name": "TheStartUpLifeGame",
+      "description": "A Story Driven Startup Game",
+      "url": "https://rtbruhan.github.io/TheStartUpLifeGame",
+      "type": "web"
+    },
+    {
+      "name": "QuickEdit",
+      "description": "A very basic image editor ",
+      "url": "https://rtbruhan.github.io/QuickEdit",
+      "type": "web"
+    }
+  ]
+}

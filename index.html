@@ -936,77 +936,100 @@
         }
     }
 
+    const extensionProjects = [
+        {
+            name: 'Auto Recorder',
+            description: 'Automatically trigger OBS recording when visiting meeting sites like Google Meet, Zoom, and Teams',
+            url: 'https://chromewebstore.google.com/detail/auto-recorder/gonlojcnmkcicaphkbkneejblnalmhjl',
+            type: 'extension'
+        },
+        {
+            name: 'Apex Agent',
+            description: 'Connect AI to your browser via MCP protocol. Automate, control, record, and debug with 69+ tools.',
+            url: 'https://chromewebstore.google.com/detail/apex-agent/pmpkkbjdkmcjcekkokcgakngkbmgehcp',
+            type: 'extension'
+        },
+        {
+            name: 'InstaHand',
+            description: 'Auto-unmute Instagram videos, native controls, keyboard shortcuts, and DM reel navigation',
+            url: 'https://chromewebstore.google.com/detail/instahand/bkagnibhkeohgjljdbpppmfbanihgkid',
+            type: 'extension'
+        },
+        {
+            name: 'Hader',
+            description: 'Track browsing time, build better site habits, and add friction to time-wasting sites',
+            url: 'https://chromewebstore.google.com/detail/hader/keiajocncjdookpkjdbpjjmlmgklagdo',
+            type: 'extension'
+        },
+        {
+            name: 'Life Log',
+            description: 'Track your life\'s countdown and document your journey with a clean, daily journal.',
+            url: 'https://chromewebstore.google.com/detail/life-log/mcbohapffdikfohpfbfabpfgngobngdc',
+            type: 'extension'
+        },
+        {
+            name: 'Note Nut',
+            description: 'Side-panel notes, reminders, and one-click sync for Google Calendar and Google Tasks',
+            url: 'https://chromewebstore.google.com/detail/note-nut/ppjegngggphklmoblkkniancofjhnbad',
+            type: 'extension'
+        },
+        {
+            name: 'AiHand',
+            description: 'Delete AI chats from the sidebar, export or delete selected chats together, and send one prompt to your chosen AI services',
+            url: 'https://chromewebstore.google.com/detail/aihand/nhkhphfljbepgenmlgicanlcemolfkkg',
+            type: 'extension'
+        }
+    ];
+
+    function renderProjects(webProjects) {
+        const projectsGrid = document.getElementById('projectsGrid');
+        projectsGrid.innerHTML = '';
+        extensionProjects.forEach(project => addProjectCard(project));
+        webProjects.forEach(project => addProjectCard(project));
+
+        if (projectsGrid.children.length === 0) {
+            projectsGrid.innerHTML = '<div class="loading">No projects found</div>';
+        }
+    }
+
+    function projectsFromRepos(repos) {
+        if (!Array.isArray(repos)) return [];
+
+        return repos
+            .filter(repo => repo.has_pages && repo.name !== 'rtbruhan.github.io')
+            .map(repo => ({
+                name: repo.name.replace(/-/g, ' '),
+                description: repo.description || 'A useful tool',
+                url: `https://rtbruhan.github.io/${repo.name}`,
+                type: 'web'
+            }));
+    }
+
+    async function loadCachedProjects() {
+        const response = await fetch('github-projects.json');
+        if (!response.ok) return [];
+        const data = await response.json();
+        return Array.isArray(data.items) ? data.items : [];
+    }
+
+    async function loadLiveProjects() {
+        const response = await fetch('https://api.github.com/users/rtbruhan/repos?sort=updated&direction=desc&per_page=100');
+        if (!response.ok) return [];
+        return projectsFromRepos(await response.json());
+    }
+
     async function loadProjects() {
         try {
-            const reposResponse = await fetch('https://api.github.com/users/rtbruhan/repos?sort=updated&direction=desc&per_page=100');
-            const repos = await reposResponse.json();
-            const projectsGrid = document.getElementById('projectsGrid');
-            projectsGrid.innerHTML = '';
+            const cachedProjects = await loadCachedProjects();
+            renderProjects(cachedProjects);
 
-            const extensions = [
-                {
-                    name: 'Auto Recorder',
-                    description: 'Automatically trigger OBS recording when visiting meeting sites like Google Meet, Zoom, and Teams',
-                    url: 'https://chromewebstore.google.com/detail/auto-recorder/gonlojcnmkcicaphkbkneejblnalmhjl',
-                    type: 'extension'
-                },
-                {
-                    name: 'Apex Agent',
-                    description: 'Connect AI to your browser via MCP protocol. Automate, control, record, and debug with 69+ tools.',
-                    url: 'https://chromewebstore.google.com/detail/apex-agent/pmpkkbjdkmcjcekkokcgakngkbmgehcp',
-                    type: 'extension'
-                },
-                {
-                    name: 'InstaHand',
-                    description: 'Auto-unmute Instagram videos, native controls, keyboard shortcuts, and DM reel navigation',
-                    url: 'https://chromewebstore.google.com/detail/instahand/bkagnibhkeohgjljdbpppmfbanihgkid',
-                    type: 'extension'
-                },
-                {
-                    name: 'Hader',
-                    description: 'Track browsing time, build better site habits, and add friction to time-wasting sites',
-                    url: 'https://chromewebstore.google.com/detail/hader/keiajocncjdookpkjdbpjjmlmgklagdo',
-                    type: 'extension'
-                },
-                {
-                    name: 'Life Log',
-                    description: 'Track your life\'s countdown and document your journey with a clean, daily journal.',
-                    url: 'https://chromewebstore.google.com/detail/life-log/mcbohapffdikfohpfbfabpfgngobngdc',
-                    type: 'extension'
-                },
-                {
-                    name: 'Note Nut',
-                    description: 'Side-panel notes, reminders, and one-click sync for Google Calendar and Google Tasks',
-                    url: 'https://chromewebstore.google.com/detail/note-nut/ppjegngggphklmoblkkniancofjhnbad',
-                    type: 'extension'
-                },
-                {
-                    name: 'AiHand',
-                    description: 'Delete AI chats from the sidebar, export or delete selected chats together, and send one prompt to your chosen AI services',
-                    url: 'https://chromewebstore.google.com/detail/aihand/nhkhphfljbepgenmlgicanlcemolfkkg',
-                    type: 'extension'
-                }
-            ];
-
-            extensions.forEach(ext => addProjectCard(ext));
-
-            repos.forEach(repo => {
-                if (repo.has_pages && repo.name !== 'rtbruhan.github.io') {
-                    addProjectCard({
-                        name: repo.name.replace(/-/g, ' '),
-                        description: repo.description || 'A useful tool',
-                        url: `https://rtbruhan.github.io/${repo.name}`,
-                        type: 'web'
-                    });
-                }
-            });
-
-            if (projectsGrid.children.length === 0) {
-                projectsGrid.innerHTML = '<div class="loading">No projects found</div>';
+            const liveProjects = await loadLiveProjects();
+            if (liveProjects.length) {
+                renderProjects(liveProjects);
             }
         } catch (error) {
             console.error('Error fetching projects:', error);
-            document.getElementById('projectsGrid').innerHTML = '<div class="loading">Error loading projects</div>';
+            renderProjects([]);
         }
     }
 
